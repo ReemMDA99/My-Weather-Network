@@ -1,0 +1,51 @@
+header {
+    background-color: rgb(13, 13, 107);
+    color: rgb(255, 255, 255);
+    height: 5rem;
+    margin-bottom: 0px;
+}
+h1{
+    margin-top: 2rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 3rem;
+    font-weight: 500;
+}
+.btn{
+    color: blue;
+}
+.row{
+    background-color: lightcyan;
+}
+.searchCol {
+    height: 100vh;
+    background-color: rgb(187, 255, 255);
+    padding-right: 1rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+
+}
+body {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 0.5;
+    color: #212529;
+    text-align: center;
+    background-color: #fff;
+}
+.card-body{
+    background-color:rgb(184 203 255);
+
+}
+h2, h4{
+    font-family: 'Times New Roman', Times, serif;
+}
+.text-muted {
+    color: #fdfdfd!important;
+}
+footer {
+    text-align: center;
+    background-color:rgb(13, 13, 107);
+    color: white;
+    width:100%;
+}
