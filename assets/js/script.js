@@ -5,8 +5,16 @@ var locationName = document.querySelector("#locationName");
 
 // store city location
 var locationList =[];
-//Get location list from local storage using JSON parse
 
+//Get location list from local storage using JSON parse
+var findLocationList = function() {
+    var savedLocations = JSON
+    .parse(localStorage.getItem("locations"));
+//incase of no saved locations
+    if (savedLocations !== null) {
+        locationList = savedLocations;
+    }
+}
 //create a function to show locations as searched by user
 var showLocations = function() {
     $("#locationList").empty();
@@ -24,6 +32,41 @@ for (counter = 0; counter < locationList.length; counter++) {
         $("#locationList").prepend(anchorTagEl);
     }
 }
+// Execute a function when the user releases a key on the keyboard
+$("#locationInput").keypress(function(enter) {
+    // Number 13 is the "Enter" key on the keyboard
+    if(enter.which == 13) {
+        // Cancel the default action, if needed
+    //event.preventDefault();
+    // Trigger the button element with a click
+    $("#searchLocationBtn").click();
+    }
+})
+// create a function to get present location into local storage which show after refreshing the page
+var findWeather= function() {
+    var savedWeather = JSON.parse(localStorage.getItem("presentLocation"));
+    
+    if (savedWeather !== null) {
+        locationName= savedWeather;
+    }
+}
+//call back local storage function
+console.log(findLocationList());
+console.log(findWeather());
+
+//create a function to save the presently display location to local storage using JSON.stringify
+var savePresentLocation = function() {
+    localStorage.setItem("presentLocation", JSON.stringify(locationName));
+}
+//Call back
+console.log(savePresentLocation());
+//create a function to save the location array to local storage using JSON.stringify
+var saveLocationArray= function() {
+    localStorage.setItem("locations", JSON.stringify(locationList));
+}
+//Call back
+console.log(saveLocationArray());
+
 //create a click event for searching location using search button
 var searchLocationBtn = document.querySelector("#searchLocationBtn");
 $("#searchLocationBtn").on("click", function(event){
@@ -105,8 +148,6 @@ var humidEl = $("<p class='card-text'>")
 .text("Humidity: " + getHumidity + "%");
 todaysForecast.append(humidEl);
 }
-
-
 //create uviNDEX
 
 //create function for 5 days forecast
@@ -116,10 +157,9 @@ var showFiveDays= async function() {
         url: apiURL,
         method: "GET"
     })
-    //card header
-    var fiveDaysDiv = $("<div id='fiveDayForecast'>");
-    var cardHeader = $("<h4 class='card-header'>")
-    .text("Forecast for next 5 days:");
+//card header
+var fiveDaysDiv = $("<div id='fiveDayForecast'>");
+var cardHeader = $("<h4 class='card-header'>").text("Forecast for next 5 days:");
     fiveDaysDiv.append(cardHeader);
 // 5 days card deck
 var fiveDaysCardDeck =("<div class='card-deck'>");
@@ -130,7 +170,7 @@ $("#fiveDaysContainer").html(fiveDaysDiv);
 //loop over for 5 days weather forecast
 for(counter=0; counter <5; counter++) {
     var fiveDaysCard = $("<div class='card mb-3 mt-3'>");
-    var cBody = $("div class='card-body boarder-secondary'>");
+    var cBody = $("<div class='card-body boarder-secondary'>");
 // create a new date variable 
     var d= new Date();
     var today= (d.getMonth()+1) + "/" + (d.getDate()+ counter+ 1) + "/" + d.getFullYear();
