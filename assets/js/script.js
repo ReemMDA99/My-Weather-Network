@@ -1,5 +1,5 @@
 //create api key and function variable
-var apiKey ="4515771b12df194d0484c403031018ac";
+var apiKey ="42d2c5222d6abd6311fe0f5a07aa5041";
 var locationInput = document.querySelector("#locationInput");
 var locationName = document.querySelector("#locationName");
 
@@ -21,7 +21,6 @@ var showLocations = function() {
     $("#locationInput").val("");
 //console log show locations
     console.log(showLocations);
-
 //loop over location list
 for (counter = 0; counter < locationList.length; counter++) {
     // create a link element to take users to list of places
@@ -36,8 +35,6 @@ for (counter = 0; counter < locationList.length; counter++) {
 $("#locationInput").keypress(function(enter) {
     // Number 13 is the "Enter" key on the keyboard
     if(enter.which == 13) {
-        // Cancel the default action, if needed
-    //event.preventDefault();
     // Trigger the button element with a click
     $("#searchLocationBtn").click();
     }
@@ -59,13 +56,13 @@ var savePresentLocation = function() {
     localStorage.setItem("presentLocation", JSON.stringify(locationName));
 }
 //Call back
-console.log(savePresentLocation());
+savePresentLocation();
 //create a function to save the location array to local storage using JSON.stringify
 var saveLocationArray= function() {
-    localStorage.setItem("locations", JSON.stringify(locationList));
+    localStorage.setItem("locationList", JSON.stringify(locationList));
 }
 //Call back
-console.log(saveLocationArray());
+saveLocationArray();
 
 //create a click event for searching location using search button
 var searchLocationBtn = document.querySelector("#searchLocationBtn");
@@ -75,8 +72,8 @@ $("#searchLocationBtn").on("click", function(event){
     //create an alert if no location is found
     if(locationName === "") {
         alert("Please enter a location to search")
-//if location list is more than 11 then use .shift and .push method
-    }else if (locationList.length >=11) {
+//if location list is more than 13 then use .shift and .push method
+    }else if (locationList.length >=13) {
         locationList.shift();
         locationList.push(locationName);
     }else {
@@ -109,8 +106,8 @@ var showWeather= async function() {
  console.log(result);
  
 //create var for latitude and longitude
-var long = result.coord.lon;
-var lat = result.coord.lat;
+var long= result.coord.lon;
+var lat= result.coord.lat;
 
 //create a var for current date
 var d = new Date(); 
@@ -133,24 +130,24 @@ todaysForecast.append(presentLocationEl);
 //Create var for present temperature
 var getTemp = result.main.temp;
 var tempEl = $("<p class='card-text'>")
-.text("Temperature: " + getTemp+ "° C");
+.text("Temperature: " + getTemp+ " ° C");
 todaysForecast.append(tempEl);
 
 //Create var for current wind speed
 var getWindSpeed = result.wind.speed;
 var windEl = $("<p class='card-text'>")
-.text("Wind: "+ getWindSpeed + "m/s");
+.text("Wind: "+ getWindSpeed + " m/s");
 todaysForecast.append(windEl);
 
 //Create var for present humidity
 var getHumidity = result.main.humidity;
 var humidEl = $("<p class='card-text'>")
-.text("Humidity: " + getHumidity + "%");
+.text("Humidity: " + getHumidity + " %");
 todaysForecast.append(humidEl);
-}
+
 // getting UV Index info and setting color class according to value
-var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" +apiKey +"&lat="+ lat +"&lon="+long;
-var uvResult = $.ajax ({
+var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" +apiKey +"&lat="+lat+"&lon="+long;
+var uvResult = await $.ajax ({
     url: uvURL,
     method:"GET" 
 })
@@ -165,6 +162,18 @@ uvNumber.appendTo(uvIndexEl);
 todaysForecast.append(uvIndexEl);
 $('#weatherContainer').html(todaysForecast);
 
+// add background color and font color to uv index data
+    //UV is greater than 2
+    if(getUVIndex <= 2) {
+        uvNumber.addClass("favorable");
+    //UV is greater than 5
+    } else if (getUVIndex <=5) {
+        uvNumber.addClass("moderate");
+    //UV is greater than 7
+    } else{
+    uvNumber.addClass("severe");
+}
+};
 //create function for 5 days forecast
 var showFiveDays= async function() {
     var apiURL = "https://api.openweathermap.org/data/2.5/forecast?q="+locationName+"&units=imperial&appid=" + apiKey;
@@ -172,12 +181,13 @@ var showFiveDays= async function() {
         url: apiURL,
         method: "GET"
     })
-//card header
+//5 days forecast card header
 var fiveDaysDiv = $("<div id='fiveDayForecast'>");
-var cardHeader = $("<h4 class='card-header'>").text("Forecast for next 5 days:");
+var cardHeader = $("<h4 class='card-header'>")
+.text("Forecast for next 5 Days: ");
     fiveDaysDiv.append(cardHeader);
 // 5 days card deck
-var fiveDaysCardDeck =("<div class='card-deck'>");
+var fiveDaysCardDeck = $("<div class='card-deck'>");
 fiveDaysDiv.append(fiveDaysCardDeck);
 console.log(result);
 $("#fiveDaysContainer").html(fiveDaysDiv);
@@ -188,7 +198,7 @@ for(counter=0; counter <5; counter++) {
     var cBody = $("<div class='card-body boarder-secondary'>");
 // create a new date variable 
     var d= new Date();
-    var today= (d.getMonth()+1) + "/" + (d.getDate()+ counter+ 1) + "/" + d.getFullYear();
+    var today=(d.getMonth()+1) + "/" + (d.getDate()+ counter+ 1) + "/" + d.getFullYear();
     var fiveDaysDate = $("<h4 class= 'card-title text-center'>").text(today);
     cBody.append(fiveDaysDate);
 //Create weather presentation icon
@@ -208,24 +218,22 @@ cBody.append(tempEl);
 //create 5 days forecast weather humidity
 var getHumidity = result.list[counter].main.humidity;
 var humidEl = $("<p class='card-text'>")
-.text("Temp: "+ getHumidity +"%");
+.text("Humidity: "+ getHumidity +"%");
 cBody.append(humidEl);
 
 //create 5 days forecast weather wind speed
 var getWindSpeed = result.list[counter].main.wind;
 var windEl = $("<p class='card-text'>")
-.text("Temp: "+ getWindSpeed +" m/s");
+.text("WindSpeed: "+ getWindSpeed +" m/s");
 cBody.append(windEl);
 
 fiveDaysCard.append(cBody);
 fiveDaysCardDeck.append(fiveDaysCard);
 }
 }
-//create a click event to show weather 
+//create a click event to show desired weather 
 $(document).on("click", showDesiredWeather);
 
-//create a click event to show weather 
-$(document).on("click", showDesiredWeather);
 var showDesiredWeather= function () {
     locationName = $(this).attr("placeName");
     showWeather();
