@@ -36,5 +36,6 @@ THEN I am again presented with current and future conditions for that city
 ![Picture1](https://user-images.githubusercontent.com/94458512/161426291-05cb3c30-ab29-42d0-94b3-8539cbee3c03.png)
 
 ## GitHub and Deployed URLs:
-GitHub url : 
-Deployed url : 
+GitHub url : https://github.com/ReemMDA99/My-Weather-Network/
+Deployed url : https://reemmda99.github.io/My-Weather-Network/
+
