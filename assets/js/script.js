@@ -5,7 +5,46 @@ var locationName = document.querySelector("#locationName");
 
 // store city location
 var locationList =[];
+//Get location list from local storage using JSON parse
 
+//create a function to show locations as searched by user
+var showLocations = function() {
+    $("#locationList").empty();
+    $("#locationInput").val("");
+//console log show locations
+    console.log(showLocations);
+
+//loop over location list
+for (counter = 0; counter < locationList.length; counter++) {
+    // create a link element to take users to list of places
+    var anchorTagEl = $("<a>");
+        anchorTagEl.addClass("list-group-item list-group-item-action justify-space-between align-center list-group-item-primary location");
+        anchorTagEl.attr("placeName", locationList[counter]);
+        anchorTagEl.text(locationList[counter]);
+        $("#locationList").prepend(anchorTagEl);
+    }
+}
+//create a click event for searching location using search button
+var searchLocationBtn = document.querySelector("#searchLocationBtn");
+$("#searchLocationBtn").on("click", function(event){
+    event.preventDefault();
+    locationName = $("#locationInput").val().trim();
+    //create an alert if no location is found
+    if(locationName === "") {
+        alert("Please enter a location to search")
+//if location list is more than 11 then use .shift and .push method
+    }else if (locationList.length >=11) {
+        locationList.shift();
+        locationList.push(locationName);
+    }else {
+        locationList.push(locationName);
+    }
+//Call back 
+    console.log(showLocations());
+//Call back present weather and a 5 days forecast functions
+console.log(showWeather());
+console.log(showFiveDays());
+});   
 // get apiLocationURL coordinate
 var showWeather= async function() {
     var apiLocationURL ="https://api.openweathermap.org/data/2.5/weather?q=" + locationName + "&units=metric&appid=" + apiKey;
@@ -19,12 +58,12 @@ var showWeather= async function() {
     // request was successful
     if (result.ok) {
       result.json().then(function() {
-        showWeather();
+        // showWeather();
       })
     } else {
     window.alert("Sorry,no data found for " + locationName + ". Try other city.");
 }
-console.log(result);
+// console.log(result);
 });
 //create var for latitude and longitude
 var long = result.coord.lon;
@@ -51,13 +90,13 @@ todaysForecast.append(presentLocationEl);
 //Create var for present temperature
 var getTemp = result.main.temp;
 var tempEl = $("<p class='card-text'>")
-.text("Temperature: " +getTemp+ "° C");
+.text("Temperature: " + getTemp+ "° C");
 todaysForecast.append(tempEl);
 
 //Create var for current wind speed
 var getWindSpeed = result.wind.speed;
 var windEl = $("<p class='card-text'>")
-.text("Wind: "+getWindSpeed+" m/s");
+.text("Wind: "+ getWindSpeed + "m/s");
 todaysForecast.append(windEl);
 
 //Create var for present humidity
@@ -101,6 +140,10 @@ for(counter=0; counter <5; counter++) {
 var getPresentWeatherIcon = result.list[counter].weather[0].icon;
 console.log(getPresentWeatherIcon);
 
+//create 5 days forecast weather icon
+var showWeatherIcon = $("<img src =http://openweathermap.org/img/wn/" +getPresentWeatherIcon+ ".png>" );
+cBody.append(showWeatherIcon);
+
 //create 5 days forecast weather temp
 var getTemp = result.list[counter].main.temp;
 var tempEl = $("<p class='card-text'>")
@@ -116,13 +159,16 @@ cBody.append(humidEl);
 //create 5 days forecast weather wind speed
 var getWindSpeed = result.list[counter].main.wind;
 var windEl = $("<p class='card-text'>")
-.text("Temp: "+ getWindSpeed +"m/s");
+.text("Temp: "+ getWindSpeed +" m/s");
 cBody.append(windEl);
 
 fiveDaysCard.append(cBody);
 fiveDaysCardDeck.append(fiveDaysCard);
 }
 }
+//create a click event to show weather 
+$(document).on("click", showDesiredWeather);
+
 //create a click event to show weather 
 $(document).on("click", showDesiredWeather);
 var showDesiredWeather= function () {
