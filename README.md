@@ -17,6 +17,7 @@ THEN I am again presented with current and future conditions for that city
 ## Technical Acceptance Criteria
 -Uses the OpenWeather API to retrieve weather data
 -Uses localStorage to store persistent data
+
 ## Languages used:
 - Html
 - CSS

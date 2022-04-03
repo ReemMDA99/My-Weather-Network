@@ -60,6 +60,8 @@ var saveLocationArray= function() {
 var savePresentLocation = function() {
     localStorage.setItem("presentLocation", JSON.stringify(locationName));
 }
+//Call back present location function
+savePresentLocation();
 //create a click event for searching location using search button
 var searchLocationBtn = document.querySelector("#searchLocationBtn");
 $("#searchLocationBtn").on("click", function(event){
