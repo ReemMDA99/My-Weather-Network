@@ -1,5 +1,5 @@
 //create api key and function variable
-var apiKey ="4515771b12df194d0484c403031018ac";
+var apiKey ="859b670676ad8f4803ac613e411e8c3f";
 var locationInput = document.querySelector("#locationInput");
 var locationName = document.querySelector("#locationName");
 
@@ -65,4 +65,69 @@ var getHumidity = result.main.humidity;
 var humidEl = $("<p class='card-text'>")
 .text("Humidity: " + getHumidity + "%");
 todaysForecast.append(humidEl);
+}
+
+
+//create uviNDEX
+
+//create function for 5 days forecast
+var showFiveDays= async function() {
+    var apiURL = "https://api.openweathermap.org/data/2.5/forecast?q="+locationName+"&units=imperial&appid=" + apiKey;
+    var result = await $.ajax ({
+        url: apiURL,
+        method: "GET"
+    })
+    //card header
+    var fiveDaysDiv = $("<div id='fiveDayForecast'>");
+    var cardHeader = $("<h4 class='card-header'>")
+    .text("Forecast for next 5 days:");
+    fiveDaysDiv.append(cardHeader);
+// 5 days card deck
+var fiveDaysCardDeck =("<div class='card-deck'>");
+fiveDaysDiv.append(fiveDaysCardDeck);
+console.log(result);
+$("#fiveDaysContainer").html(fiveDaysDiv);
+
+//loop over for 5 days weather forecast
+for(counter=0; counter <5; counter++) {
+    var fiveDaysCard = $("<div class='card mb-3 mt-3'>");
+    var cBody = $("div class='card-body boarder-secondary'>");
+// create a new date variable 
+    var d= new Date();
+    var today= (d.getMonth()+1) + "/" + (d.getDate()+ counter+ 1) + "/" + d.getFullYear();
+    var fiveDaysDate = $("<h4 class= 'card-title text-center'>").text(today);
+    cBody.append(fiveDaysDate);
+//Create weather presentation icon
+var getPresentWeatherIcon = result.list[counter].weather[0].icon;
+console.log(getPresentWeatherIcon);
+
+//create 5 days forecast weather temp
+var getTemp = result.list[counter].main.temp;
+var tempEl = $("<p class='card-text'>")
+.text("Temp: "+ getTemp +"° C");
+cBody.append(tempEl);
+
+//create 5 days forecast weather humidity
+var getHumidity = result.list[counter].main.humidity;
+var humidEl = $("<p class='card-text'>")
+.text("Temp: "+ getHumidity +"%");
+cBody.append(humidEl);
+
+//create 5 days forecast weather wind speed
+var getWindSpeed = result.list[counter].main.wind;
+var windEl = $("<p class='card-text'>")
+.text("Temp: "+ getWindSpeed +"m/s");
+cBody.append(windEl);
+
+fiveDaysCard.append(cBody);
+fiveDaysCardDeck.append(fiveDaysCard);
+}
+}
+//create a click event to show weather 
+$(document).on("click", showDesiredWeather);
+var showDesiredWeather= function () {
+    locationName = $(this).attr("placeName");
+    showWeather();
+    showFiveDays();
+    console.log(locationName);
 }
