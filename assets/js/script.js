@@ -2,21 +2,10 @@
 var apiKey ="42d2c5222d6abd6311fe0f5a07aa5041";
 var locationInput = document.querySelector("#locationInput");
 var locationName = document.querySelector("#locationName");
-
+var locationContainer = document.querySelector("#locationList");
 // store city location
 var locationList =[];
 
-//Get location list from local storage using JSON parse
-var findLocationList = function() {
-    var savedLocations = JSON
-    .parse(localStorage.getItem("locations"));
-//incase of no saved locations
-    if (savedLocations !== null) {
-        locationList = savedLocations;
-    }
-}
-//call back local storage function
-findLocationList();
 
 //create a function to show locations as searched by user
 var showLocations = function() {
@@ -42,6 +31,18 @@ for (counter = 0; counter < locationList.length; counter++) {
 //     $("#searchLocationBtn").click();
 //     }
 // })
+//Get location list from local storage using JSON parse
+var findLocationList = function() {
+    var savedLocations = JSON
+    .parse(localStorage.getItem("locations"));
+//incase of no saved locations
+    if (savedLocations !== null) {
+        locationList = savedLocations;
+    }
+    showLocations();
+}
+//call back local storage function
+findLocationList();
 
 // create a function to get present location into local storage which show after refreshing the page
 var findWeather= function() {
@@ -232,12 +233,16 @@ fiveDaysCard.append(cBody);
 fiveDaysCardDeck.append(fiveDaysCard);
 }
 }
-//create a click event to show desired weather 
-$(document).on("click", showDesiredWeather);
 
-var showDesiredWeather= function () {
-    locationName = $(this).attr("placeName");
-    showWeather();
-    showFiveDays();
-    console.log(locationName);
+var showDesiredWeather= function(e) {
+    if(!e.target.matches(".location"))
+    {return;}
+    
+    console.log("click");
+    locationName = e.target.getAttribute("placeName");
+    showWeather(locationName);
+    showFiveDays(locationName);
+    // console.log(locationName);
 }
+//create a click event to show desired weather 
+locationContainer.addEventListener("click", showDesiredWeather);
