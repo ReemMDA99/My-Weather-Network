@@ -15,6 +15,9 @@ var findLocationList = function() {
         locationList = savedLocations;
     }
 }
+//call back local storage function
+findLocationList();
+
 //create a function to show locations as searched by user
 var showLocations = function() {
     $("#locationList").empty();
@@ -31,39 +34,31 @@ for (counter = 0; counter < locationList.length; counter++) {
         $("#locationList").prepend(anchorTagEl);
     }
 }
-// Execute a function when the user releases a key on the keyboard
-$("#locationInput").keypress(function(enter) {
-    // Number 13 is the "Enter" key on the keyboard
-    if(enter.which == 13) {
-    // Trigger the button element with a click
-    $("#searchLocationBtn").click();
-    }
-})
+// // Execute a function when the user releases a key on the keyboard
+// $("#locationInput").keypress(function(enter) {
+//     // Number 13 is the "Enter" key on the keyboard
+//     if(enter.which == 13) {
+//     // Trigger the button element with a click
+//     $("#searchLocationBtn").click();
+//     }
+// })
+
 // create a function to get present location into local storage which show after refreshing the page
 var findWeather= function() {
     var savedWeather = JSON.parse(localStorage.getItem("presentLocation"));
-    
     if (savedWeather !== null) {
         locationName= savedWeather;
     }
 }
-//call back local storage function
-findLocationList();
 findWeather();
-
-//create a function to save the presently display location to local storage using JSON.stringify
-var savePresentLocation = function() {
-    localStorage.setItem("presentLocation", JSON.stringify(locationName));
-}
-//Call back
-savePresentLocation();
 //create a function to save the location array to local storage using JSON.stringify
 var saveLocationArray= function() {
     localStorage.setItem("locationList", JSON.stringify(locationList));
 }
-//Call back
-saveLocationArray();
-
+//create a function to save the presently display location to local storage using JSON.stringify
+var savePresentLocation = function() {
+    localStorage.setItem("presentLocation", JSON.stringify(locationName));
+}
 //create a click event for searching location using search button
 var searchLocationBtn = document.querySelector("#searchLocationBtn");
 $("#searchLocationBtn").on("click", function(event){
@@ -79,12 +74,18 @@ $("#searchLocationBtn").on("click", function(event){
     }else {
         locationList.push(locationName);
     }
-//Call back 
+//Call back present location function
+savePresentLocation();
+//Call back locations locally stored in array
+saveLocationArray();
+//Call back location list
 showLocations();
-//Call back present weather and a 5 days forecast functions
+//Call back present weather
 showWeather();
+//Call back 5 days forecast functions
 showFiveDays();
 });   
+
 // get apiLocationURL coordinate
 var showWeather= async function() {
     var apiLocationURL ="https://api.openweathermap.org/data/2.5/weather?q=" + locationName + "&units=metric&appid=" + apiKey;
@@ -222,7 +223,7 @@ var humidEl = $("<p class='card-text'>")
 cBody.append(humidEl);
 
 //create 5 days forecast weather wind speed
-var getWindSpeed = result.list[counter].main.wind;
+var getWindSpeed = result.list[counter].wind.speed;
 var windEl = $("<p class='card-text'>")
 .text("WindSpeed: "+ getWindSpeed +" m/s");
 cBody.append(windEl);
