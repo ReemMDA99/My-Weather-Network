@@ -12,7 +12,7 @@ var showLocations = function() {
     $("#locationList").empty();
     $("#locationInput").val("");
 //console log show locations
-    showLocations();
+    console.log(showLocations);
 //loop over location list
 for (counter = 0; counter < locationList.length; counter++) {
     // create a link element to take users to list of places
