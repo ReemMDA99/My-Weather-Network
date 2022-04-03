@@ -1,5 +1,5 @@
 //create api key and function variable
-var apiKey ="859b670676ad8f4803ac613e411e8c3f";
+var apiKey ="4515771b12df194d0484c403031018ac";
 var locationInput = document.querySelector("#locationInput");
 var locationName = document.querySelector("#locationName");
 
@@ -51,8 +51,8 @@ var findWeather= function() {
     }
 }
 //call back local storage function
-console.log(findLocationList());
-console.log(findWeather());
+findLocationList();
+findWeather();
 
 //create a function to save the presently display location to local storage using JSON.stringify
 var savePresentLocation = function() {
@@ -83,10 +83,10 @@ $("#searchLocationBtn").on("click", function(event){
         locationList.push(locationName);
     }
 //Call back 
-    console.log(showLocations());
+showLocations();
 //Call back present weather and a 5 days forecast functions
-console.log(showWeather());
-console.log(showFiveDays());
+showWeather();
+showFiveDays();
 });   
 // get apiLocationURL coordinate
 var showWeather= async function() {
@@ -95,22 +95,22 @@ var showWeather= async function() {
         url: apiLocationURL,
         method: "GET"
     })
-    // get location data from api url
-    fetch(apiLocationURL)
-    .then(function(result) {
-    // request was successful
-    if (result.ok) {
-      result.json().then(function() {
-        // showWeather();
-      })
-    } else {
-    window.alert("Sorry,no data found for " + locationName + ". Try other city.");
-}
-// console.log(result);
-});
+//     // get location data from api url
+//     fetch(apiLocationURL)
+//     .then(function(result) {
+//     // request was successful
+//     if (result.ok) {
+//       result.json().then(function() {
+//         showWeather();
+//       })
+//     } else {
+//     window.alert("Sorry,no data found for " + locationName + ". Try other city.");
+// }
+ console.log(result);
+ 
 //create var for latitude and longitude
 var long = result.coord.lon;
-var lati = result.coord.lat;
+var lat = result.coord.lat;
 
 //create a var for current date
 var d = new Date(); 
@@ -148,7 +148,22 @@ var humidEl = $("<p class='card-text'>")
 .text("Humidity: " + getHumidity + "%");
 todaysForecast.append(humidEl);
 }
-//create uviNDEX
+// getting UV Index info and setting color class according to value
+var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" +apiKey +"&lat="+ lat +"&lon="+long;
+var uvResult = $.ajax ({
+    url: uvURL,
+    method:"GET" 
+})
+//create span element to hold uv values
+var getUVIndex = uvResult.value;
+var uvNumber = $("<span>");
+uvNumber.text(getUVIndex);
+
+//create uvIndexEl function
+var uvIndexEl = $("<p class='card-text'>").text("UV Index: ");
+uvNumber.appendTo(uvIndexEl);
+todaysForecast.append(uvIndexEl);
+$('#weatherContainer').html(todaysForecast);
 
 //create function for 5 days forecast
 var showFiveDays= async function() {
