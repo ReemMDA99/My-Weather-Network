@@ -180,7 +180,7 @@ $('#weatherContainer').html(todaysForecast);
 };
 //create function for 5 days forecast
 var showFiveDays= async function() {
-    var apiURL = "https://api.openweathermap.org/data/2.5/forecast?q="+locationName+"&units=imperial&appid=" + apiKey;
+    var apiURL = "https://api.openweathermap.org/data/2.5/forecast?q="+locationName+"&units=metric&appid=" + apiKey;
     var result = await $.ajax ({
         url: apiURL,
         method: "GET"
