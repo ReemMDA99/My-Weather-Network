@@ -1,8 +1,10 @@
-
+* {
+    box-sizing: border-box;
+}
 header {
     background-color: rgb(13, 13, 107);
     color: rgb(255, 255, 255);
-    height: 5rem;
+    height: 20%;
     margin-bottom: 2px;
 }
 h1{
@@ -41,9 +43,14 @@ body {
     font-family: monospace;
     background-color: #fff;
 }
+.card {
+    width: 100;
+    height: auto;
+
+}
 .card-body{
     background-color:rgb(184 203 255);
-    
+    height: fit-content;
 }
 .text-muted {
     color: #fdfdfd!important;
@@ -75,28 +82,14 @@ footer {
     color: white;
 }
 
-/* Smartphones (portrait and landscape) ----------- */
-@media only screen
-and (min-device-width : 320px) 
-and (max-device-width : 480px) {
-/* Styles */
-}
- 
-/* Smartphones (landscape) ----------- */
-@media only screen
-and (min-width : 321px) {
-/* Styles */
-}
- 
-/* Smartphones (portrait) ----------- */
-@media only screen
-and (max-width : 320px) {
-/* Styles */
-}
- 
-/* iPads (portrait and landscape) ----------- */
-@media only screen
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) {
-/* Styles */
+/* For desktop: */
+.col-3 {width: 25%;}
+.col-9 {width: 75%;}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+    .col-3 
+    .col-9 {
+        width: 100%;
+    }
 }
