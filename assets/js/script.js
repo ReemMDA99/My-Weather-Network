@@ -6,7 +6,6 @@ var locationContainer = document.querySelector("#locationList");
 // store city location
 var locationList =[];
 
-
 //create a function to show locations as searched by user
 var showLocations = function() {
     $("#locationList").empty();
@@ -23,18 +22,19 @@ for (counter = 0; counter < locationList.length; counter++) {
         $("#locationList").prepend(anchorTagEl);
     }
 }
-// // Execute a function when the user releases a key on the keyboard
-// $("#locationInput").keypress(function(enter) {
-//     // Number 13 is the "Enter" key on the keyboard
-//     if(enter.which == 13) {
-//     // Trigger the button element with a click
-//     $("#searchLocationBtn").click();
-//     }
-// })
+
+//create a function to save the location array to local storage using JSON.stringify
+var saveLocationArray= function() {
+    localStorage.setItem("locationList", JSON.stringify(locationList));
+}
+//create a function to save the presently display location to local storage using JSON.stringify
+var savePresentLocation = function() {
+    localStorage.setItem("presentLocation", JSON.stringify(locationName));
+}
 //Get location list from local storage using JSON parse
 var findLocationList = function() {
     var savedLocations = JSON
-    .parse(localStorage.getItem("locations"));
+    .parse(localStorage.getItem("locationList"));
 //incase of no saved locations
     if (savedLocations !== null) {
         locationList = savedLocations;
@@ -52,14 +52,7 @@ var findWeather= function() {
     }
 }
 findWeather();
-//create a function to save the location array to local storage using JSON.stringify
-var saveLocationArray= function() {
-    localStorage.setItem("locationList", JSON.stringify(locationList));
-}
-//create a function to save the presently display location to local storage using JSON.stringify
-var savePresentLocation = function() {
-    localStorage.setItem("presentLocation", JSON.stringify(locationName));
-}
+
 //Call back present location function
 savePresentLocation();
 //create a click event for searching location using search button
